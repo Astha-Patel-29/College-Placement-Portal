@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student profile — College Placement Portal</title>
+  <link rel="stylesheet" href="navbar.css">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding-top: 72px;
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f8f9ff;
+      color: #333;
+    }
+    .page-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 28px 18px 48px;
+    }
+    .page-title {
+      text-align: center;
+      margin-bottom: 8px;
+      color: #233fbb;
+      font-size: 1.65rem;
+    }
+    .page-sub {
+      text-align: center;
+      color: #666;
+      margin-bottom: 28px;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 28px 24px 32px;
+      box-shadow: 0 4px 24px rgba(35, 63, 187, 0.08);
+      border: 1px solid #e8eaf2;
+    }
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #5c6378;
+      margin: 22px 0 14px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #dde2ef;
+    }
+    .section-label:first-of-type { margin-top: 0; }
+    .form-group { margin-bottom: 18px; }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #333;
+    }
+    label .hint-inline {
+      font-weight: 500;
+      color: #777;
+      font-size: 12px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      font-family: inherit;
+    }
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #233fbb;
+      box-shadow: 0 0 0 3px rgba(35, 63, 187, 0.15);
+    }
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    .row-2 {
+      display: grid;
+      gap: 16px;
+    }
+    @media (min-width: 560px) {
+      .row-2 { grid-template-columns: 1fr 1fr; }
+    }
+    .file-hint {
+      font-size: 12px;
+      color: #666;
+      margin-top: 6px;
+    }
+    .submit-btn {
+      width: 100%;
+      margin-top: 12px;
+      padding: 14px;
+      background: #233fbb;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .submit-btn:hover { background: #1a328f; }
+    .footer-note {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 14px;
+      color: #666;
+    }
+    .footer-note a { color: #233fbb; font-weight: 600; text-decoration: none; }
+    .footer-note a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <!-- Navbar inlined so it works from http://localhost (fetch also works; this is fallback) -->
+  <div id="navbar-container">
+    <nav class="navbar" role="navigation" aria-label="Main">
+      <div class="navbar-inner">
+        <div class="navbar-brand">
+          <a href="index.html">College Placement Portal</a>
+        </div>
+        <div class="navbar-links">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="explor.html" class="nav-link">Explore</a>
+          <a href="login.html" class="nav-link">Login</a>
+          <a href="registration.html" class="nav-link">Register</a>
+          <div class="dropdown">
+            <button type="button" class="dropdown-btn" aria-haspopup="true" aria-expanded="false">
+              More <span class="dropdown-arrow" aria-hidden="true">▼</span>
+            </button>
+            <div class="dropdown-content" role="menu">
+              <a href="about.html" role="menuitem">About Us</a>
+              <a href="contact.html" role="menuitem">Contact</a>
+              <a href="faq.html" role="menuitem">FAQ</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <div class="page-wrap">
+    <h1 class="page-title">Complete your profile</h1>
+    <p class="page-sub">Add your institute details, skills, and resume. Fields marked * are required.</p>
+
+    <div class="card">
+      <form action="save_student.php" method="POST" enctype="multipart/form-data">
+        <p class="section-label">Personal</p>
+        <div class="form-group">
+          <label for="name">Full name *</label>
+          <input type="text" id="name" name="name" required autocomplete="name" placeholder="As per registration">
+        </div>
+        <div class="row-2">
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required autocomplete="email" placeholder="Institute email">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone <span class="hint-inline">(optional)</span></label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="10-digit mobile">
+          </div>
+        </div>
+
+        <p class="section-label">Institute</p>
+        <div class="form-group">
+          <label for="college_name">College name *</label>
+          <input type="text" id="college_name" name="college_name" required placeholder="e.g. Government Engineering College">
+        </div>
+        <div class="form-group">
+          <label for="university">University / affiliating body *</label>
+          <input type="text" id="university" name="university" required placeholder="e.g. Gujarat Technological University">
+        </div>
+
+        <p class="section-label">Academic &amp; skills</p>
+        <div class="form-group">
+          <label for="course">Program / course *</label>
+          <input type="text" id="course" name="course" required placeholder="e.g. B.Tech Computer Engineering">
+        </div>
+        <div class="form-group">
+          <label for="skills">Skills &amp; highlights *</label>
+          <textarea id="skills" name="skills" required placeholder="Languages, frameworks, projects, certifications…"></textarea>
+        </div>
+
+        <p class="section-label">Resume</p>
+        <div class="form-group">
+          <label for="resume">Upload resume *</label>
+          <input type="file" id="resume" name="resume" required accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+          <p class="file-hint">PDF, DOC, or DOCX · max 5 MB</p>
+        </div>
+
+        <button type="submit" class="submit-btn">Save profile</button>
+        <p class="footer-note">Already saved? <a href="student-dashboard.html">Go to dashboard</a> · <a href="login.html">Login</a></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var el = document.getElementById('navbar-container');
+      if (!el) return;
+      fetch('navbar.html')
+        .then(function (r) { return r.text(); })
+        .then(function (html) {
+          if (html && html.indexOf('navbar') !== -1) el.innerHTML = html;
+        })
+        .catch(function () {});
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Placement Portal - Registration</title>
+  <link rel="stylesheet" href="navbar.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      padding-top: 70px;
+      height: 100vh;
+      background: #f8f9ff;
+      overflow-x: hidden;
+    }
+
+    /* === Page Layout === */
+    .page {
+      display: flex;
+      width: 100%;
+      height: calc(100vh - 70px);
+      margin-top: 0;
+    }
+
+    /* Left side (Blue Section) */
+    .left-section {
+      width: 50%;
+      height: calc(100vh - 70px);
+      /* background: url(gec.jpg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat; */
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      text-align: center;
+      
+      position: relative;
+    }
+.left-section::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url(gec.jpg);
+  background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.8;
+      z-index: -1;
+}
+    .left-section img {
+      width: 400px;
+      margin-bottom: 25px;
+      
+    }
+
+    .left-section h2 {
+      font-size: 24px;
+      line-height: 1.4;
+      /* background-color: #333; */
+      text-shadow: 2px  2px  5px black;
+    }
+
+    .instructions {
+      margin-top: 25px;
+      font-size: 18px;
+      color: #ffffff;
+      text-shadow: 2px  2px  5px black;
+    }
+
+    /* Right side (Form Section) */
+    .right-section {
+      width: 50%;
+      height: calc(100vh - 70px);
+      background: #f8f9ff;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .registration-form {
+      background: white;
+      width: 100%;
+      max-width: 100%;
+      height: calc(100vh - 70px);
+      padding: 40px;
+      border-radius: 0;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+
+    .registration-form h2 {
+      text-align: center;
+      color: #233fbb;
+      margin-bottom: 25px;
+    }
+
+    form {
+
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    /* User Type Selector */
+    .user-type-selector {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .user-type-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: #f0f0f0;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #555;
+      transition: all 0.3s ease;
+    }
+
+    .user-type-btn.active {
+      background: #233fbb;
+      color: white;
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #233fbb;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: #233fbb;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: #0066ff;
+    }
+
+    .register-link {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+    }
+
+    .register-link a {
+      color: #233fbb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .page {
+        flex-direction: column;
+      }
+
+      .left-section,
+      .right-section {
+        width: 100%;
+        height: auto;
+      }
+
+      .left-section {
+        padding: 20px;
+      }
+
+      .right-section {
+        padding: 20px;
+      }
+
+      .registration-form {
+
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .user-type-selector {
+        flex-direction: column;
+      }
+    }
+
+    .form {
+
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar: same as home page (index.html) -->
+  <div id="navbar-container"></div>
+  <div class="page">
+    <!-- Left Panel -->
+    <div class="left-section">
+
+      <h2>One stop portal for<br>students & companies<br>for placements.</h2>
+      <p class="instructions">
+        Register using your institute credentials to access placement features.
+      </p>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-section">
+      <div class="registration-form">
+        <h2>Registration</h2>
+
+        <div class="user-type-selector">
+          <!-- <button class="user-type-btn active" data-type="student">Student</button> -->
+          <input type="hidden" name="role" id="role" value="student">
+          <!-- <button class="user-type-btn" data-type="Placement coordinator">Coordinator</button>
+          <button class="user-type-btn" data-type="company">Recruiter</button> -->
+
+          <button type="button" class="user-type-btn active" data-type="student">Student</button>
+<button type="button" class="user-type-btn" data-type="Placement coordinator">Admin</button>
+<button type="button" class="user-type-btn" data-type="company">Recruiter</button>
+        </div>
+
+
+
+        <form id="registrationForm"  action="register.php" method="POST">
+          <div class="form">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPassword">Confirm Password</label>
+              <input type="password" id="confirmPassword" name="confirmPassword" required>
+            </div>
+
+            <!-- Student Fields -->
+            <div class="user-specific student-fields">
+              <div class="form-group">
+                <label for="rollNumber">Enrollment Number</label>
+                <input type="text" id="rollNumber" name="rollNumber">
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone No</label>
+                <input type="tel" id="phone" name="phone" required>
+              </div>
+              <div class="form-group">
+                <label for="department">Department</label>
+                <select id="department" name="department">
+                  <option value="">Select Department</option>
+                  <option value="cse">Computer Science</option>
+                  <option value="it">Information Technology</option>
+                  <option value="ece">Electronics</option>
+                  <option value="mech">Mechanical</option>
+                  <option value="civil">Civil</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Placement Coordinator Fields -->
+            <div class="user-specific placement-coordinator-fields" style="display: none;">
+              <div class="form-group">
+                <label for="hodDepartment">Department</label>
+                <select id="hodDepartment" name="hodDepartment">
+                  <option value="">Select Department</option>
+                  <option value="it">Information Technology</option>
+                  <option value="cse">Computer Science</option>
+                  <option value="ece">Electronics</option>
+                  <option value="mech">Mechanical</option>
+                  <option value="civil">Civil</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Company Fields -->
+            <div class="user-specific company-fields" style="display: none;">
+             
+              <div class="form-group">
+                <label for="companyType">Company Type</label>
+                <select id="companyType" name="companyType">
+                  <option value="">Select Type</option>
+                  <option value="it">IT</option>
+                  <option value="manufacturing">Manufacturing</option>
+                  <option value="service">Service</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Register</button>
+
+            <div class="register-link">
+              I have an account? <a href="login.html">Login here</a>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var el = document.getElementById('navbar-container');
+      if (!el) return;
+      fetch('navbar.html')
+        .then(function (response) { return response.text(); })
+        .then(function (html) {
+          if (html) el.innerHTML = html;
+        })
+        .catch(function () {});
+    })();
+  </script>
+  <script src="script.js"></script>
+</body>
+
+</html>

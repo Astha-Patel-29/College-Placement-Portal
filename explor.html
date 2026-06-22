@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore more</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="navbar.css">
+
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            margin: 0;
+            padding-top: 60px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: blanchedalmond;
+            background-image: url(scp.jpg);
+            background-repeat: no-repeat;
+            background-size: 100% 20%;
+        }
+
+        body::before {
+
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 24px auto 80px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+.container a {
+    text-decoration-line:none ;
+}
+.container li:hover{
+    color: #1f6feb;
+}
+
+
+        .container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #fff;
+        }
+
+        .container ul {
+            list-style: none;
+            padding: 0;
+            text-decoration: none;
+            text-decoration-line: none;
+        }
+
+        .container li {
+            background: rgba(255, 255, 255, 0.1);
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+        }
+
+        #liststyle {
+            list-style: none;
+        }
+
+        .box {
+            background-color: rgb(114, 177, 209);
+            padding: 20px;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 19px;
+        }
+
+        .icon {
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+
+        .icon a {
+            color: #000000;
+        }
+
+        #placmentofficer h3 {
+            background-color: rgb(119, 143, 143);
+            border: 2px solid black;
+            border-radius: 3px;
+            width: 500px;
+            justify-content: center;
+            justify-items: center;
+            align-items: center;
+            text-align: center;
+            margin: auto;
+        }
+
+        .box:hover {
+            transform: scale(1.1);
+        }
+
+.newssection{
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.site-header {
+background-color: #e3e3e3;
+  border-bottom: 1px solid #e3e3e3;
+  padding: 24px 0 16px;
+}
+
+.site-title { font-size: 26px;
+     font-weight: 700; }
+.site-subtitle { color: #666; 
+    margin-top: 6px; }
+
+.notice-list {
+  background: #fff;
+  border: 1px solid #e3e3e3;
+  border-radius: 10px;
+  margin: 24px auto 36px;
+  overflow: hidden;
+}
+
+.notice-item {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+  padding: 16px 18px;
+  border-bottom: 1px solid #eee;
+}
+.notice-item:last-child { 
+    border-bottom: none; }
+
+.notice-date {
+     color: #555;
+     display: flex; 
+     align-items: center; 
+     gap: 8px; 
+     font-weight: 600; }
+.notice-date i { color: #1f6feb; }
+
+.notice-title { color: #111; 
+    text-decoration: none; 
+    font-weight: 700; 
+    line-height: 1.4; }
+.notice-title:hover { color: #1f6feb; }
+
+.notice-desc { color: #666; 
+    margin-top: 4px; }
+
+
+
+@media (max-width: 720px) {
+  .notice-item { grid-template-columns: 1fr; }
+}
+
+
+
+/* Main content area */
+.summary {
+    font-size: 20px;
+    margin-bottom: 5px;
+    text-align: center;
+    background-color: rgb(27, 27, 82);
+    color: white;
+    height: 100px;
+}
+
+  .summary-page {
+    width: 90%;
+    max-width: 900px;
+    margin: 20px auto;           /* center the page */
+    padding: 10px;
+  }
+  
+  /* Year buttons */
+  .year-tabs {
+    text-align: center;          /* center the buttons */
+    margin-bottom: 20px;
+  }
+  
+  .year-tab {
+    padding: 8px 15px;
+    border: 1px solid #1c2342;
+    background-color: #eef2ff;
+    color: #0f1a46;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 5px;
+  }
+  
+  .year-tab.active {
+    background-color: #0f1a46;
+    color: white;
+  }
+  
+  /* KPI boxes (simple info cards) */
+  .kpi-grid {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .kpi-card {
+    display: inline-block;       /* show boxes side by side */
+    background-color: rgb(255, 255, 255);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    width: 180px;                /* fixed width for cards */
+  }
+  
+  .kpi-title {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 5px;
+  }
+  
+  .kpi-value {
+    font-size: 22px;
+    font-weight: bold;
+    color: #111;
+  }
+  
+  /* Table style */
+  .table-wrap {
+    overflow-x: auto;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  table.summary {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table.summary th {
+    background-color: #0f1a46;
+    color:white;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  table.summary td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: white;
+    color: black;
+  }
+  
+  table.summary tfoot td {
+    font-weight: bold;
+    background-color: #f2f2f2;
+    color: #111;
+  }
+  
+  /* Heading for sections */
+  .summary-section-title {
+    color: black;
+    margin: 10px 0;
+    text-align: center;
+  }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar: same as home page (index.html) -->
+    <div id="navbar-container"></div>
+
+    <div class="container">
+        <h2>Placement Information</h2>
+        <ul>
+            <a href="#placmentofficer">
+                <li>Training and Placement Officer</li>
+            </a>
+            <a href="#news">
+                <li>Placement News</li>
+            </a>
+            <a href="#summary">
+                <li>Summary (Year Wise)</li>
+            </a>
+            <a href="#placedstudent">
+                <li>placed Students</li>
+            </a>
+            <a href="#ourrecruter">
+                <li>Our Recruiters</li>
+            </a>
+        </ul>
+    </div>
+    <section id="placmentofficer">
+        <header class="site-header">
+        <div class="newssection">
+            <h1 class="site-title">Training and Placement Officer </h1>
+            
+            <p class="site-subtitle">Government Engineering College, Bhavnagar</p>
+        </div>
+    </header>
+        
+        <div class="box">
+            <h2>Prof. S.J.Molia</h2>
+            <h4>TPO</h4>
+            <div class="icon">
+                <a href=""><i class="fa-regular fa-envelope"></i> :tpo@gecbhavnagar.ac.in</a>
+                <a href=""> <i class="fa-solid fa-phone"></i>:9106122512</a>
+            </div>
+        </div>
+
+        <div class="box">
+            <h2>Dr. A. K. Sarvaiya</h2>
+            <h4>ASSISTANT TPO</h4>
+            <div class="icon">
+                <a href=""><i class="fa-regular fa-envelope"></i> :aksarvaiya.ec@gecbhavnagar.ac.in</a>
+                <a href=""> <i class="fa-solid fa-phone"></i>:9898986857</a>
+            </div>
+        </div>
+
+        <div class="box">
+            <h2>Mr. B. R Solanki (ELECTRICAL)</h2>
+            <h4>ASSISTANT TPO</h4>
+            <div class="icon">
+                <a href=""><i class="fa-regular fa-envelope"></i> : brsolanki.ec@gecbhavnagar.ac.in</a>
+                <a href=""> <i class="fa-solid fa-phone"></i>:9725144933</a>
+            </div>
+        </div>
+
+        <div class="box">
+            <h2>Mr. K. R. Makvana (COMPUTER)</h2>
+            <h4>ASSISTANT TPO</h4>
+            <div class="icon">
+                <a href=""><i class="fa-regular fa-envelope"></i> :kamleshrmakvana@gmail.com</a>
+                <a href=""> <i class="fa-solid fa-phone"></i>:9313390395</a>
+            </div>
+        </div>
+
+        <div class="box">
+            <h2>Mr. B. V. Vainsh</h2>
+            <h4>ASSISTANT TPO</h4>
+            <div class="icon">
+                <a href=""><i class="fa-regular fa-envelope"></i> :bvvainsh.it@gecbhavnagar.ac.in
+                </a>
+                <a href=""> <i class="fa-solid fa-phone"></i>:
+                    9265592772</a>
+            </div>
+        </div>
+
+        <div class="box">
+            <h2>Mr. N. S. Chavda (IT)</h2>
+            <h4>DEPARTMENT COORDINATOR</h4>
+            <div class="icon">
+                <a href=""><i class="fa-regular fa-envelope"></i> :nishidh.bece@gmail.com
+                </a>
+                <a href=""> <i class="fa-solid fa-phone"></i>:
+                    9979073405</a>
+            </div>
+        </div>
+
+
+        <div class="box">
+            <h2>Mr. P. J. Gohel (EC)</h2>
+            <h4>DEPARTMENT COORDINATOR</h4>
+            <div class="icon">
+                <a href=""><i class="fa-regular fa-envelope"></i> :pratik.gohel09@gmail.com
+                </a>
+                <a href=""> <i class="fa-solid fa-phone"></i>:
+                    9067983626</a>
+            </div>
+        </div>
+
+
+        <div class="box">
+            <h2>Mr. Chintan Gajjar (CIVIL)</h2>
+            <h4>DEPARTMENT COORDINATOR</h4>
+            <div class="icon">
+                <a href=""><i class="fa-regular fa-envelope"></i> :Email</a>
+                <a href=""> <i class="fa-solid fa-phone"></i>:Phone no</a>
+            </div>
+        </div>
+
+
+        <div class="box">
+            <h2>Mr. D. B. Patel (Mechanical)</h2>
+            <h4>DEPARTMENT COORDINATOR</h4>
+            <div class="icon">
+                <a href=""><i class="fa-regular fa-envelope"></i> :Email</a>
+                <a href=""> <i class="fa-solid fa-phone"></i>:Phone no</a>
+            </div>
+        </div>
+
+        <div class="box">
+            <h2>Mr. M. K. Vala (ICT)</h2>
+            <h4>DEPARTMENT COORDINATOR</h4>
+            <div class="icon">
+                <a href=""><i class="fa-regular fa-envelope"></i> :Email</a>
+                <a href=""> <i class="fa-solid fa-phone"></i>:Phone no</a>
+            </div>
+        </div>
+    </section>
+   
+                 
+    
+    <section id="news">
+           <header class="site-header">
+        <div class="newssection">
+            <h1 class="site-title">Placement Cell news and updates  
+
+            </h1>
+            <p class="site-subtitle">Latest updates, events and records</p>
+            <p class="site-subtitle">Government Engineering College, Bhavnagar</p>
+        </div>
+    </header>
+
+    <main class="newssection">
+        <section class="notice-list" aria-label="Latest notices">
+            <article class="notice-item">
+                <div class="notice-date"><i class="fa-regular fa-calendar-days"></i><span>2025-03-10</span></div>
+                <div class="notice-body">
+                    <a class="notice-title" href="#">Career Guidance and higher study Cell activity under Centre TP cell  </a>
+                    <p class="notice-desc">TCS Meet and Greet Session for TCS NQT 2025 Expert TCS HR Mr.Rohit SuyaniCareer Guidance and higher study Cell activity under Centre TP cell</p>
+                </div>
+            </article>
+
+            <article class="notice-item">
+                <div class="notice-date"><i class="fa-regular fa-calendar-days"></i><span>2025-03-03</span></div>
+                <div class="notice-body">
+                    <a class="notice-title" href="#">Training and Placement record statistics GY- 2022 to 2025</a>
+                    <p class="notice-desc">Training and Placement statistics 2022 to 2025</p>
+                </div>
+            </article>
+
+            <article class="notice-item">
+                <div class="notice-date"><i class="fa-regular fa-calendar-days"></i><span>2025-03-03</span></div>
+                <div class="notice-body">
+                    <a class="notice-title" href="#">Placement Cell structure of GEC Bhavnagar</a>
+                    <p class="notice-desc">Placement Cell structure of GEC Bhavnagar</p>
+                </div>
+            </article>
+
+            <article class="notice-item">
+                <div class="notice-date"><i class="fa-regular fa-calendar-days"></i><span>2025-03-03</span></div>
+                <div class="notice-body">
+                    <a class="notice-title" href="#">Mechanical Engineering 2025 batch selected students press note Placement Update</a>
+                    <p class="notice-desc">Mechanical Engineering 2025 batch selected students press note</p>
+                </div>
+            </article>
+
+            <article class="notice-item">
+                <div class="notice-date"><i class="fa-regular fa-calendar-days"></i><span>2025-02-20</span></div>
+                <div class="notice-body">
+                    <a class="notice-title" href="#">Placement Record GY 2021 as per NBA</a>
+                    <p class="notice-desc">Placement Record GY 2021 as per NBA</p>
+                </div>
+            </article>
+
+            <article class="notice-item">
+                <div class="notice-date"><i class="fa-regular fa-calendar-days"></i><span>2025-02-20</span></div>
+                <div class="notice-body">
+                    <a class="notice-title" href="#">Placement Record GY 2022 as per NBA</a>
+                    <p class="notice-desc">Placement Record GY 2022</p>
+                </div>
+            </article>
+        </section>
+    </main>
+    </section>
+     <section id="summary">
+  <section class="summary">
+    <h1>Summary of Placements</h1>
+    <div class="breadcrumb">Home › Summary of Placements</div>
+  </section>
+
+  <main class="summary-page">
+    <div class="year-tabs">
+      <button class="year-tab active" type="button">2024</button>
+      <button class="year-tab" type="button">2023</button>
+      <button class="year-tab" type="button">2022</button>
+    </div>
+
+    <section class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-title">Total Students</div><div class="kpi-value">360</div></div>
+      <div class="kpi-card"><div class="kpi-title">Placed Students</div><div class="kpi-value">161</div></div>
+      <div class="kpi-card"><div class="kpi-title">Placement Rate</div><div class="kpi-value">44.72%</div></div>
+      <div class="kpi-card"><div class="kpi-title">Highest Package</div><div class="kpi-value">6.50 Lacs</div></div>
+      <div class="kpi-card"><div class="kpi-title">Average Package</div><div class="kpi-value">2.72 Lacs</div></div>
+      <div class="kpi-card"><div class="kpi-title">Companies Visited</div><div class="kpi-value">64</div></div>
+    </section>
+
+    <h2 class="summary-section-title">Branch Wise Summary (As on 31st December)</h2>
+    <div class="table-wrap">
+      <table class="summary">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Branch</th>
+            <th>Total Students</th>
+            <th>Placed Students</th>
+            <th>Placed %</th>
+            <th>Highest package</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Computer Engineering</td><td>60</td><td>40</td><td>66.67%</td><td>5.00 Lacs</td></tr>
+          <tr><td>2</td><td>Information Technology</td><td>60</td><td>31</td><td>51.67%</td><td>4.80 Lacs</td></tr>
+          <tr><td>3</td><td>Electronics & Communication Engineering</td><td>60</td><td>13</td><td>21.67%</td><td>4.00 Lacs</td></tr>
+          <tr><td>4</td><td>Mechanical Engineering</td><td>120</td><td>50</td><td>41.67%</td><td>6.50 Lacs</td></tr>
+          <tr><td>5</td><td>Civil Engineering</td><td>60</td><td>27</td><td>45.00%</td><td>6.50 Lacs</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td></td><td>Total</td><td>360</td><td>161</td><td>44.72%</td><td></td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var el = document.getElementById('navbar-container');
+      if (!el) return;
+      fetch('navbar.html')
+        .then(function (response) { return response.text(); })
+        .then(function (html) {
+          if (html) el.innerHTML = html;
+        })
+        .catch(function () {});
+    })();
+  </script>
+
+    </section>
+
+</body>
+
+</html>

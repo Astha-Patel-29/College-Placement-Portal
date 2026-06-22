@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Placement Portal - Login</title>
+  <link rel="stylesheet" href="navbar.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      padding-top: 70px;
+      height: 100vh;
+      background: #f8f9ff;
+      overflow-x: hidden;
+    }
+
+    /* === Page Layout === */
+    .page {
+      display: flex;
+      width: 100%;
+      height: calc(100vh - 70px);
+      margin-top: 0;
+    }
+
+    /* Left side (Image Section) */
+    .left-section {
+      width: 50%;
+      height: calc(100vh - 70px);
+     position: relative;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      text-align: center;
+    }
+  
+.left-section::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url(gec.jpg);
+  background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.8;
+      z-index: -1;
+}
+    .left-section img {
+      width: 400px;
+      margin-bottom: 25px;
+    }
+
+    .left-section h2 {
+      font-size: 24px;
+      line-height: 1.4;
+      text-shadow: 2px  2px  5px black;
+    }
+
+    .instructions {
+      margin-top: 25px;
+      font-size: 18px;
+      color: #ffffff;
+      text-shadow: 2px  2px  5px black;
+    }
+
+    /* Right side (Form Section) */
+    .right-section {
+      width: 50%;
+      height: calc(100vh - 70px);
+      background: #f8f9ff;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .login-form {
+      background: white;
+      width: 100%;
+      max-width: 100%;
+      height: calc(100vh - 70px);
+      padding: 40px;
+      border-radius: 0;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+
+    .login-form h2 {
+      text-align: center;
+      color: #233fbb;
+      margin-bottom: 25px;
+    }
+
+    form {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    /* User Type Selector */
+    .user-type-selector {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .user-type-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: #f0f0f0;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      color: #555;
+      transition: all 0.3s ease;
+    }
+
+    .user-type-btn.active {
+      background: #233fbb;
+      color: white;
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #233fbb;
+    }
+
+    .remember-me {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      width: auto;
+    }
+
+    .forgot-password {
+      color: #233fbb;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: #233fbb;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: #0066ff;
+    }
+
+    .register-link {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+    }
+
+    .register-link a {
+      color: #233fbb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .page {
+        flex-direction: column;
+      }
+
+      .left-section, .right-section {
+        width: 100%;
+        height: auto;
+      }
+
+      .left-section {
+        padding: 20px;
+      }
+
+      .right-section {
+        padding: 20px;
+      }
+
+      .login-form {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .user-type-selector {
+        flex-direction: column;
+      }
+    }
+
+    .form {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar-container"></div>
+  <div class="page">
+    <!-- Left Panel -->
+    <div class="left-section">
+      <!-- <img src="Online-event-registration.webp" alt="College Logo"> -->
+      <h2>One stop portal for<br>students & companies<br>for placements.</h2>
+      <p class="instructions">
+        Login using your institute credentials to access placement features.
+      </p>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-section">
+      <div class="login-form">
+        <h2>Login</h2>
+
+        <div class="user-type-selector">
+          <button class="user-type-btn active" data-type="student">Student</button>
+          <button class="user-type-btn" data-type="hod">Admin</button>
+
+          <button class="user-type-btn" data-type="company">Recruiter</button>
+        </div>
+
+        <form id="loginForm">
+          <div class="form">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" required>
+            </div>
+
+            <div class="form-group remember-me">
+              <label class="checkbox-label">
+                <input type="checkbox" name="remember" id="remember">
+                Remember me
+              </label>
+              <a href="#" class="forgot-password">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="submit-btn">Login</button>
+
+            <div class="register-link">
+              Don't have an account? <a href="registration.html">Register here</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load login JavaScript -->
+  <script src="login.js"></script>
+  
+  <!-- JavaScript to toggle user types -->
+  <script>
+    const buttons = document.querySelectorAll('.user-type-btn');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // Load navbar
+    fetch('navbar.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('navbar-container').innerHTML = data;
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - College Placement Portal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            background: linear-gradient(180deg, #eef3ff 0%, #fef9df 100%);
+        }
+
+        .navbar {
+            background-color: #233fbb;
+            padding: 10px;
+            color: white;
+            text-align: center;
+            min-height: 35px;
+        }
+
+        .navbar a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .student-info {
+            background: white;
+            padding: 28px 24px;
+            margin: 24px 20px 18px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 18px 40px rgba(35, 63, 187, 0.12);
+        }
+
+        .avatar {
+            width: 108px;
+            height: 108px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #233fbb;
+            color: white;
+            font-size: 34px;
+            font-weight: 700;
+            margin: 0 auto 12px;
+            box-shadow: 0 10px 24px rgba(35, 63, 187, 0.22);
+        }
+
+        .student-info h2 {
+            margin-bottom: 8px;
+            font-size: 30px;
+        }
+
+        .student-info p {
+            margin: 6px 0;
+            color: #444;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 0 20px 12px;
+        }
+
+        .card {
+            background-color: white;
+            width: 200px;
+            padding: 18px;
+            margin: 10px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 14px 34px rgba(32, 41, 79, 0.1);
+        }
+
+        .card h3 {
+            margin: 10px 0 5px;
+        }
+
+        .profile-panel {
+            background: white;
+            padding: 24px;
+            margin: 20px;
+            border-radius: 18px;
+            box-shadow: 0 18px 40px rgba(32, 41, 79, 0.1);
+        }
+
+        .profile-panel h2 {
+            margin: 0 0 18px;
+            color: #233fbb;
+            font-size: 24px;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .profile-item {
+            background: #f6f8ff;
+            border: 1px solid #e0e7ff;
+            border-radius: 14px;
+            padding: 14px 16px;
+        }
+
+        .profile-item strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #56607a;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .profile-item span,
+        .profile-item a {
+            color: #1e2433;
+            font-size: 15px;
+            line-height: 1.45;
+            text-decoration: none;
+            word-break: break-word;
+        }
+
+        .profile-item.profile-wide {
+            grid-column: 1 / -1;
+        }
+
+        .empty-profile {
+            background: #fff8e7;
+            border: 1px solid #f0d79d;
+            border-radius: 14px;
+            padding: 16px;
+            color: #6b551b;
+            line-height: 1.5;
+        }
+
+        .empty-profile a {
+            color: #233fbb;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .section {
+            background-color: white;
+            padding: 18px;
+            margin: 20px;
+            border-radius: 18px;
+            box-shadow: 0 18px 40px rgba(32, 41, 79, 0.08);
+        }
+
+        .section h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .section p {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 640px) {
+            .student-info h2 {
+                font-size: 24px;
+            }
+
+            .profile-panel,
+            .student-info,
+            .section {
+                margin-left: 14px;
+                margin-right: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="explor.html">Home</a>
+        <a href="jobs.html">Jobs</a>
+      
+        <a href="student_details.html">Profile</a>
+        <a href="#" id="logoutLink">Logout</a>
+    </div>
+
+    <div class="student-info">
+        <div class="avatar" id="studentAvatar">S</div>
+        <h2 id="studentName">Student</h2>
+        <p id="studentEmail">student@example.com</p>
+        <p id="studentMeta">Student dashboard</p>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <h3>2</h3>
+            <p>Jobs Applied</p>
+        </div>
+        <div class="card">
+            <h3>2</h3>
+            <p>Upcoming Interviews</p>
+        </div>
+    </div>
+
+    <div class="profile-panel">
+        <h2>Your Profile Details</h2>
+        <div id="profileContent" class="empty-profile">
+            Your saved profile details will appear here after you complete the student details form.
+            <a href="student_details.html">Complete profile</a>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Placement Notices</h2>
+        <p>Infosys Hiring Drive - Last date to apply: 10 Oct</p>
+        <p>Resume Building Workshop - 9 Oct, 3 PM</p>
+        <p>Campus Placement Policy 2025 Updated</p>
+    </div>
+
+    <div class="section">
+        <h2>Upcoming Interviews</h2>
+        <p>TCS Technical Interview - 10 Oct | 11:00 AM</p>
+        <p>Infosys HR Round - 12 Oct | 2:30 PM</p>
+    </div>
+
+    <script>
+        (function () {
+            var rawUser = localStorage.getItem('currentUser');
+            if (!rawUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            var user;
+            try {
+                user = JSON.parse(rawUser);
+            } catch (error) {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            var role = String(user.role || '').toLowerCase();
+            if (role && role !== 'student') {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            var name = user.name || 'Student';
+            var email = user.email || 'No email found';
+            var profileContent = document.getElementById('profileContent');
+            var rawSavedProfile = localStorage.getItem('studentProfile');
+
+            document.getElementById('studentName').textContent = name;
+            document.getElementById('studentEmail').textContent = email;
+            document.getElementById('studentMeta').textContent = 'Welcome to your own student dashboard';
+            document.getElementById('studentAvatar').textContent = name.charAt(0).toUpperCase();
+
+            function escapeHtml(value) {
+                return String(value || '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+
+            function renderProfile(profile) {
+                if (!profile) {
+                    profileContent.className = 'empty-profile';
+                    profileContent.innerHTML = 'Your profile is not filled yet. <a href="student_details.html">Complete profile</a>';
+                    return;
+                }
+
+                document.getElementById('studentName').textContent = profile.name || name;
+                document.getElementById('studentEmail').textContent = profile.email || email;
+                document.getElementById('studentMeta').textContent = (profile.course || 'Student') + ' | ' + (profile.college_name || 'College details pending');
+                document.getElementById('studentAvatar').textContent = (profile.name || name).charAt(0).toUpperCase();
+
+                var resumeLink = profile.resume_path
+                    ? '<a href="' + encodeURI(profile.resume_path) + '" target="_blank" rel="noopener noreferrer">View uploaded resume</a>'
+                    : 'Not uploaded';
+
+                profileContent.className = 'profile-grid';
+                profileContent.innerHTML =
+                    '<div class="profile-item"><strong>Full Name</strong><span>' + escapeHtml(profile.name || name) + '</span></div>' +
+                    '<div class="profile-item"><strong>Email</strong><span>' + escapeHtml(profile.email || email) + '</span></div>' +
+                    '<div class="profile-item"><strong>Phone</strong><span>' + escapeHtml(profile.phone || 'Not provided') + '</span></div>' +
+                    '<div class="profile-item"><strong>College Name</strong><span>' + escapeHtml(profile.college_name || 'Not provided') + '</span></div>' +
+                    '<div class="profile-item"><strong>University</strong><span>' + escapeHtml(profile.university || 'Not provided') + '</span></div>' +
+                    '<div class="profile-item"><strong>Course</strong><span>' + escapeHtml(profile.course || 'Not provided') + '</span></div>' +
+                    '<div class="profile-item profile-wide"><strong>Skills & Highlights</strong><span>' + escapeHtml(profile.skills || 'Not provided') + '</span></div>' +
+                    '<div class="profile-item profile-wide"><strong>Resume</strong>' + resumeLink + '</div>';
+            }
+
+            if (rawSavedProfile) {
+                try {
+                    var savedProfile = JSON.parse(rawSavedProfile);
+                    if (savedProfile && String(savedProfile.email || '').toLowerCase() === String(email).toLowerCase()) {
+                        renderProfile(savedProfile);
+                    }
+                } catch (error) {}
+            }
+
+            fetch('get_student_profile.php?email=' + encodeURIComponent(email))
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    if (!data || !data.success) {
+                        throw new Error((data && data.error) || 'Could not load profile');
+                    }
+                    renderProfile(data.profile || null);
+                })
+                .catch(function () {
+                    if (!rawSavedProfile) {
+                        profileContent.className = 'empty-profile';
+                        profileContent.innerHTML = 'Could not load saved details right now. <a href="student_details.html">Edit profile</a>';
+                    }
+                });
+
+            var logoutLink = document.getElementById('logoutLink');
+            logoutLink.addEventListener('click', function (event) {
+                event.preventDefault();
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('studentProfile');
+                window.location.href = 'login.html';
+            });
+        })();
+    </script>
+</body>
+</html>

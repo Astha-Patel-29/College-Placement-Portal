@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company Dashboard — Placement Portal</title>
+ 
+  <style>
+    /* General Page Style */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 0;
+    background-image: url(scp.jpg);
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+  
+  /* Navbar */
+  .navbar {
+    background-color: #233fbb;;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar h1 {
+    font-size: 20px;
+    margin: 0;
+  }
+  
+  .navbar nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 15px;
+  }
+  
+  .navbar nav a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Dashboard Heading */
+  .dashboard {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .dashboard h2 {
+    color: #1a237e;
+  }
+  
+  /* Stats Section */
+  .stats {
+    margin-top: 20px;
+  }
+  
+  .card {
+    display: inline-block;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    width: 180px;
+    margin: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card h3 {
+    color: #555;
+    font-size: 14px;
+  }
+  
+  .card p {
+    font-size: 22px;
+    color: #1a237e;
+    font-weight: bold;
+  }
+  
+  /* Table Section */
+  .table-section {
+    margin-top: 30px;
+    font-size: large;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    margin-top: 10px;
+  }
+  
+  th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #1a237e;
+    color: white;
+  }
+  
+  /* Footer */
+  footer {
+    background-color: #1a237e;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: 100px;
+  }
+    .company-dashboard {
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .company-dashboard h2 {
+      color: #1a237e;
+      margin-top: 0;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      background: #fff;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+
+    .profile-grid dt {
+      font-size: 12px;
+      color: #666;
+      margin: 0;
+    }
+
+    .profile-grid dd {
+      margin: 4px 0 0 0;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .post-job-form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 24px;
+    }
+
+    .post-job-form .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    @media (max-width: 640px) {
+      .post-job-form .row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .post-job-form label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 4px;
+    }
+
+    .post-job-form input,
+    .post-job-form select,
+    .post-job-form textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .post-job-form textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      background: #233fbb;
+      color: #fff;
+    }
+
+    .btn:hover {
+      background: #1a2d8a;
+    }
+
+    .btn.secondary {
+      background: #5c6bc0;
+    }
+
+    .btn.small {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+
+    .jobs-table-wrap {
+      overflow-x: auto;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .jobs-table-wrap table {
+      margin-top: 0;
+    }
+
+    .msg {
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .msg.ok {
+      background: #e8f5e9;
+      color: #1b5e20;
+    }
+
+    .msg.err {
+      background: #ffebee;
+      color: #b71c1c;
+    }
+
+    #auth-gate {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    #auth-gate a {
+      color: #233fbb;
+      font-weight: 600;
+    }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .45);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 10px;
+      max-width: 720px;
+      width: 100%;
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, .2);
+    }
+
+    .modal header {
+      padding: 14px 18px;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal header h3 {
+      margin: 0;
+      font-size: 18px;
+      color: #1a237e;
+    }
+
+    .modal .modal-body {
+      padding: 16px 18px;
+      overflow-y: auto;
+    }
+
+    .applicant-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      background: #fafafa;
+    }
+
+    .applicant-card h4 {
+      margin: 0 0 8px 0;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .applicant-meta {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .applicant-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .stats {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="navbar">
+    <h1>Company dashboard</h1>
+    <nav>
+      <a href="explor.html">Home</a>
+      <a href="registration.html">Register</a>
+      <a href="logout.php">Logout</a>
+    </nav>
+  </header>
+
+  <main class="dashboard company-dashboard">
+    <div id="auth-gate" style="display:none;">
+      <p>You need to log in as a company (recruiter) to view this page.</p>
+      <p><a href="login.html">Go to login</a></p>
+    </div>
+
+    <div id="app-root" style="display:none;">
+      <h2 id="welcome-heading">Welcome</h2>
+
+      <section>
+        <h3 style="text-align:left;color:#1a237e;">Company details</h3>
+        <dl class="profile-grid" id="company-profile"></dl>
+      </section>
+
+      <div class="stats">
+        <div class="card">
+          <h3>Jobs posted</h3>
+          <p id="stat-jobs">0</p>
+        </div>
+        <div class="card">
+          <h3>Applications received</h3>
+          <p id="stat-apps">0</p>
+        </div>
+      </div>
+
+      <section class="post-job-form">
+        <h3 style="margin-top:0;color:#1a237e;">Post a job</h3>
+        <div id="post-msg"></div>
+        <form id="post-job-form">
+          <div class="form-group">
+            <label for="job-title">Job title</label>
+            <input type="text" id="job-title" name="title" required maxlength="255">
+          </div>
+          <div class="form-group">
+            <label for="job-desc">Description</label>
+            <textarea id="job-desc" name="description" required
+              placeholder="Role summary, requirements, etc."></textarea>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label for="job-package">Package / compensation</label>
+              <input type="text" id="job-package" name="package" required placeholder="e.g. 8 LPA, ₹50k/month">
+            </div>
+            <div class="form-group">
+              <label for="job-deadline">Application deadline</label>
+              <input type="date" id="job-deadline" name="deadline" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label for="opportunity-type">Opportunity</label>
+              <select id="opportunity-type" name="opportunity_type" required>
+                <option value="">Select</option>
+                <option value="full_time">Full time</option>
+                <option value="part_time">Part time</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="job-type">Job type</label>
+              <select id="job-type" name="job_type" required>
+                <option value="">Select</option>
+                <option value="remote">Remote</option>
+                <option value="on_site">On-site</option>
+                <option value="freelance">Freelance</option>
+                <option value="full_time">Full time</option>
+                <option value="part_time">Part time</option>
+                <option value="contract">Contract</option>
+                <option value="internship">Internship</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="job-location">Location (optional)</label>
+            <input type="text" id="job-location" name="location" maxlength="255" placeholder="City / region">
+          </div>
+          <button type="submit" class="btn" id="post-submit">Publish job</button>
+        </form>
+      </section>
+
+      <section class="table-section">
+        <h3 style="text-align:left;">Your job listings</h3>
+        <p id="jobs-empty" style="display:none;">You have not posted any jobs yet. Use the form above to add one.</p>
+        <div class="jobs-table-wrap" id="jobs-table-wrap" style="display:none;">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Package</th>
+                <th>Deadline</th>
+                <th>Opportunity</th>
+                <th>Job type</th>
+                <th>Applications</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="jobs-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="modal-backdrop" id="applicants-modal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-labelledby="modal-title">
+      <header>
+        <h3 id="modal-title">Applicants</h3>
+        <button type="button" class="btn secondary small" id="modal-close">Close</button>
+      </header>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="company-dashboard.js"></script>
+</body>
+
+</html>

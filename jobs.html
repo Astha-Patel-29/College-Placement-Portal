@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jobs | College Placement Portal</title>
+  <link rel="stylesheet" href="navbar.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(35, 63, 187, 0.12), transparent 32%),
+        linear-gradient(180deg, #eef3ff 0%, #f8fbff 45%, #fffdf4 100%);
+      color: #1f2937;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 104px 18px 40px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #233fbb 0%, #3559de 60%, #8bb7ff 100%);
+      color: #fff;
+      border-radius: 24px;
+      padding: 28px 24px;
+      box-shadow: 0 20px 44px rgba(35, 63, 187, 0.24);
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 720px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .toolbar {
+      margin: 22px 0 18px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .toolbar input {
+      flex: 1 1 280px;
+      min-width: 220px;
+      border: 1px solid #c7d2fe;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 15px;
+      background: #fff;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+    }
+
+    .toolbar .hint {
+      font-size: 14px;
+      color: #475569;
+    }
+
+    .msg {
+      margin: 12px 0 18px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .msg.ok {
+      display: block;
+      background: #e8fff0;
+      color: #166534;
+      border: 1px solid #b7ebc6;
+    }
+
+    .msg.err {
+      display: block;
+      background: #fff1f2;
+      color: #b42318;
+      border: 1px solid #fecdd3;
+    }
+
+    .jobs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 18px;
+    }
+
+    .job-card {
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid #dbe5ff;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 16px 36px rgba(31, 41, 55, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .job-card h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: #14213d;
+    }
+
+    .company {
+      font-weight: 700;
+      color: #233fbb;
+      margin-top: 2px;
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      background: #eef2ff;
+      color: #334155;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .job-meta {
+      display: grid;
+      gap: 8px;
+      font-size: 14px;
+      color: #475569;
+    }
+
+    .job-desc {
+      color: #334155;
+      line-height: 1.6;
+      min-height: 72px;
+    }
+
+    .job-actions {
+      margin-top: auto;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      border-radius: 12px;
+      padding: 11px 15px;
+      font-size: 14px;
+      font-weight: 700;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 18px rgba(35, 63, 187, 0.16);
+    }
+
+    .btn.primary {
+      background: #233fbb;
+      color: #fff;
+    }
+
+    .btn.secondary {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .btn[disabled] {
+      cursor: not-allowed;
+      opacity: 0.75;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .status {
+      font-size: 13px;
+      font-weight: 700;
+      color: #166534;
+    }
+
+    .empty-state {
+      padding: 30px 20px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px dashed #cbd5e1;
+      border-radius: 18px;
+      color: #475569;
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding-top: 92px;
+      }
+
+      .hero {
+        padding: 22px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar-container"></div>
+
+  <main class="page">
+    <section class="hero">
+      <h1>Open Jobs From Recruiting Companies</h1>
+      <p id="role-note">Students can apply directly here. Admins can review all company postings in one place.</p>
+    </section>
+
+    <section class="toolbar">
+      <input type="search" id="searchBox" placeholder="Search by title, company, location, or type">
+      <div class="hint" id="toolbarHint">Loading jobs...</div>
+    </section>
+
+    <div id="pageMsg" class="msg"></div>
+    <section id="jobsGrid" class="jobs-grid"></section>
+  </main>
+
+  <script>
+    (function () {
+      var navbarHost = document.getElementById('navbar-container');
+      fetch('navbar.html')
+        .then(function (response) { return response.text(); })
+        .then(function (html) {
+          if (navbarHost) navbarHost.innerHTML = html;
+        })
+        .catch(function () {});
+
+      var searchBox = document.getElementById('searchBox');
+      var jobsGrid = document.getElementById('jobsGrid');
+      var pageMsg = document.getElementById('pageMsg');
+      var toolbarHint = document.getElementById('toolbarHint');
+      var roleNote = document.getElementById('role-note');
+      var currentRole = '';
+      var jobs = [];
+
+      function escapeHtml(value) {
+        return String(value == null ? '' : value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function formatLabel(value) {
+        return String(value || '')
+          .replace(/_/g, ' ')
+          .replace(/\b\w/g, function (ch) { return ch.toUpperCase(); });
+      }
+
+      function showMessage(type, text) {
+        if (!text) {
+          pageMsg.className = 'msg';
+          pageMsg.textContent = '';
+          return;
+        }
+        pageMsg.className = 'msg ' + (type === 'ok' ? 'ok' : 'err');
+        pageMsg.textContent = text;
+      }
+
+      function fetchJson(url, options) {
+        return fetch(url, options).then(function (response) {
+          return response.text().then(function (text) {
+            var data = null;
+            try {
+              data = text ? JSON.parse(text) : null;
+            } catch (error) {
+              throw new Error(text || 'Invalid server response');
+            }
+            if (!response.ok || !data || data.success === false) {
+              throw new Error((data && data.error) || ('Request failed (' + response.status + ')'));
+            }
+            return data;
+          });
+        });
+      }
+
+      function renderJobs() {
+        var query = String(searchBox.value || '').trim().toLowerCase();
+        var filtered = jobs.filter(function (job) {
+          if (!query) return true;
+          var haystack = [
+            job.title,
+            job.company_name,
+            job.location,
+            job.salary,
+            job.opportunity_type,
+            job.job_type,
+            job.description
+          ].join(' ').toLowerCase();
+          return haystack.indexOf(query) !== -1;
+        });
+
+        toolbarHint.textContent = filtered.length + ' job' + (filtered.length === 1 ? '' : 's') + ' shown';
+
+        if (!filtered.length) {
+          jobsGrid.innerHTML = '<div class="empty-state">No jobs matched your search.</div>';
+          return;
+        }
+
+        jobsGrid.innerHTML = filtered.map(function (job) {
+          var appliedText = job.has_applied
+            ? '<span class="status">Applied' + (job.applied_at ? ' on ' + escapeHtml(job.applied_at) : '') + '</span>'
+            : '';
+
+          var applyButton = '';
+          if (currentRole === 'student') {
+            applyButton = '<button class="btn primary" data-apply-job="' + job.id + '"' + (job.has_applied ? ' disabled' : '') + '>' +
+              (job.has_applied ? 'Already Applied' : 'Apply Now') +
+              '</button>';
+          } else if (currentRole === 'admin') {
+            applyButton = '<button class="btn secondary" disabled>Admin view only</button>';
+          } else {
+            applyButton = '<button class="btn secondary" disabled>Login as student to apply</button>';
+          }
+
+          return '' +
+            '<article class="job-card">' +
+              '<div>' +
+                '<h2>' + escapeHtml(job.title || 'Untitled Job') + '</h2>' +
+                '<div class="company">' + escapeHtml(job.company_name || 'Company') + '</div>' +
+              '</div>' +
+              '<div class="chips">' +
+                '<span class="chip">' + escapeHtml(formatLabel(job.opportunity_type || 'Opportunity')) + '</span>' +
+                '<span class="chip">' + escapeHtml(formatLabel(job.job_type || 'Type')) + '</span>' +
+                '<span class="chip">' + escapeHtml(job.location || 'Location not set') + '</span>' +
+              '</div>' +
+              '<div class="job-meta">' +
+                '<div><strong>Package:</strong> ' + escapeHtml(job.salary || job.package || 'Not specified') + '</div>' +
+                '<div><strong>Deadline:</strong> ' + escapeHtml(job.deadline || 'Open') + '</div>' +
+                '<div><strong>Applicants:</strong> ' + escapeHtml(job.applicant_count || 0) + '</div>' +
+              '</div>' +
+              '<div class="job-desc">' + escapeHtml(job.description || 'No description provided.') + '</div>' +
+              '<div class="job-actions">' + applyButton + appliedText + '</div>' +
+            '</article>';
+        }).join('');
+      }
+
+      function loadJobs() {
+        fetchJson('getjobs.php', {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        }).then(function (data) {
+          jobs = data.jobs || [];
+          currentRole = String(data.role || '').toLowerCase();
+
+          if (currentRole === 'student') {
+            roleNote.textContent = 'Students can apply directly from this page. Your applied jobs are marked instantly.';
+          } else if (currentRole === 'admin') {
+            roleNote.textContent = 'Admins can review all jobs posted by companies from one page.';
+          } else {
+            roleNote.textContent = 'Browse current openings. Log in as a student if you want to apply.';
+          }
+
+          showMessage('', '');
+          renderJobs();
+        }).catch(function (error) {
+          toolbarHint.textContent = 'Could not load jobs';
+          jobsGrid.innerHTML = '<div class="empty-state">' + escapeHtml(error.message || 'Could not load jobs right now.') + '</div>';
+        });
+      }
+
+      jobsGrid.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-apply-job]');
+        if (!button) return;
+
+        var jobId = parseInt(button.getAttribute('data-apply-job'), 10);
+        if (!jobId) return;
+
+        button.disabled = true;
+        button.textContent = 'Applying...';
+        showMessage('', '');
+
+        fetchJson('apply_job.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({ job_id: jobId })
+        }).then(function (data) {
+          showMessage('ok', data.message || 'Application submitted successfully.');
+          loadJobs();
+        }).catch(function (error) {
+          showMessage('err', error.message || 'Could not apply for this job.');
+          loadJobs();
+        });
+      });
+
+      searchBox.addEventListener('input', renderJobs);
+      loadJobs();
+    })();
+  </script>
+</body>
+</html>

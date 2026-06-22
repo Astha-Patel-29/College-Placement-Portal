@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Placement Coordinator Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <h1>College Placement Portal</h1>
+    <nav>
+      <span id="coordinator-welcome" class="nav-user" aria-label="Logged in as"></span>
+      <a href="explor.html">Home</a>
+      <a href="#" id="nav-students">Students</a>
+      <a href="#" id="nav-companies">Companies</a>
+      <a href="#" id="nav-placed">Placed</a>
+      <a href="#" id="logout-link">Logout</a>
+    </nav>
+  </header>
+
+  <main class="dashboard">
+    <div id="banner" class="msg-banner" role="status"></div>
+
+    <div class="stats">
+      <div class="card">
+        <h3>Students Registered</h3>
+        <p id="stat-students">—</p>
+      </div>
+      <div class="card">
+        <h3>Companies</h3>
+        <p id="stat-companies">—</p>
+      </div>
+      <div class="card">
+        <h3>Placed Students</h3>
+        <p id="stat-placed">—</p>
+      </div>
+      <div class="card">
+        <h3>Placement Rate</h3>
+        <p id="stat-rate">—</p>
+      </div>
+    </div>
+
+    <div class="admin-toolbar">
+      <button type="button" class="tab-btn active" data-tab="students">Students</button>
+      <button type="button" class="tab-btn" data-tab="companies">Companies</button>
+      <button type="button" class="tab-btn" data-tab="placed">Placed students</button>
+    </div>
+
+    <section id="panel-students" class="table-section panel active">
+      <h3>Student profiles</h3>
+     
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Roll</th>
+            <th>Department</th>
+            <th>Phone</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-students">
+          <tr><td colspan="7">Loading…</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="panel-companies" class="table-section panel">
+      <h3>Company profiles</h3>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Contact name</th>
+            <th>Email</th>
+            <th>Company</th>
+            <th>Type</th>
+            <th>Phone</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-companies">
+          <tr><td colspan="7">Loading…</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="panel-placed" class="table-section panel">
+      <h3>Placed students</h3>
+      
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Student</th>
+            <th>Department</th>
+            <th>Company</th>
+            <th>Package (LPA)</th>
+            <th>Role</th>
+            <th>Placed on</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-placed">
+          <tr><td colspan="8">Loading…</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <details class="record-placement">
+      <summary>Record a new placement </summary>
+      <form id="form-add-placement" class="admin-form-grid" style="max-width:1100px;">
+        <label>Student ID <input type="number" name="student_id" required min="1"></label>
+        <label>Company user ID (optional) <input type="number" name="company_id" min="1" placeholder="users.id for company"></label>
+        <label>Company name (if no ID) <input type="text" name="company_name" placeholder="e.g. TCS"></label>
+        <label>Package (LPA) <input type="number" name="package_lpa" step="0.01" min="0"></label>
+        <label>Role <input type="text" name="role_title" placeholder="e.g. GET"></label>
+        <label>Placed on <input type="date" name="placed_on"></label>
+        <label style="grid-column:1/-1;">Remark<textarea name="notes" rows="2"></textarea></label>
+        <div style="grid-column:1/-1;">
+          <button type="submit" class="tab-btn active" style="border:none;">Save placement</button>
+        </div>
+      </form>
+    </details>
+  </main>
+
+  <div id="modal-backdrop" class="modal-backdrop" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <h3 id="modal-title">Details</h3>
+      <div id="modal-body"></div>
+      <div class="modal-actions" id="modal-actions"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var API = 'placement_admin_api.php';
+
+      function showBanner(text, ok) {
+        var el = document.getElementById('banner');
+        el.textContent = text || '';
+        el.className = 'msg-banner ' + (ok ? 'ok' : 'error');
+        if (!text) el.className = 'msg-banner';
+      }
+
+      function clearBanner() {
+        var el = document.getElementById('banner');
+        el.textContent = '';
+        el.className = 'msg-banner';
+      }
+
+      function getJSON(url, options) {
+        return fetch(url, options || {}).then(function (r) {
+          return r.text().then(function (t) {
+            var data;
+            try { data = JSON.parse(t); } catch (e) { throw new Error(t || 'Invalid JSON'); }
+            if (!r.ok) throw new Error(data.error || r.statusText);
+            return data;
+          });
+        });
+      }
+
+      function esc(s) {
+        if (s == null || s === '') return '—';
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function attr(s) {
+        if (s == null) return '';
+        return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+      }
+
+      function setTab(name) {
+        document.querySelectorAll('.tab-btn').forEach(function (b) {
+          b.classList.toggle('active', b.getAttribute('data-tab') === name);
+        });
+        document.querySelectorAll('.panel').forEach(function (p) {
+          p.classList.remove('active');
+        });
+        var panel = document.getElementById('panel-' + name);
+        if (panel) panel.classList.add('active');
+      }
+
+      document.querySelectorAll('.tab-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          setTab(btn.getAttribute('data-tab'));
+        });
+      });
+
+      document.getElementById('nav-students').addEventListener('click', function (e) {
+        e.preventDefault();
+        setTab('students');
+      });
+      document.getElementById('nav-companies').addEventListener('click', function (e) {
+        e.preventDefault();
+        setTab('companies');
+      });
+      document.getElementById('nav-placed').addEventListener('click', function (e) {
+        e.preventDefault();
+        setTab('placed');
+      });
+
+      function loadStats() {
+        return getJSON(API + '?resource=stats').then(function (d) {
+          var s = d.stats || {};
+          document.getElementById('stat-students').textContent = s.students_registered != null ? s.students_registered : '0';
+          document.getElementById('stat-companies').textContent = s.companies != null ? s.companies : '0';
+          document.getElementById('stat-placed').textContent = s.placed_students != null ? s.placed_students : '0';
+          document.getElementById('stat-rate').textContent =
+            (s.placement_rate_percent != null ? s.placement_rate_percent : '0') + '%';
+        });
+      }
+
+      function loadStudents() {
+        return getJSON(API + '?resource=students').then(function (d) {
+          var tbody = document.getElementById('tbody-students');
+          var rows = d.students || [];
+          if (!rows.length) {
+            tbody.innerHTML = '<tr><td colspan="7">No students registered yet.</td></tr>';
+            return;
+          }
+          tbody.innerHTML = rows.map(function (u) {
+            return '<tr>' +
+              '<td>' + esc(u.id) + '</td>' +
+              '<td>' + esc(u.name) + '</td>' +
+              '<td>' + esc(u.email) + '</td>' +
+              '<td>' + esc(u.roll_number) + '</td>' +
+              '<td>' + esc(u.department) + '</td>' +
+              '<td>' + esc(u.phone) + '</td>' +
+              '<td class="table-actions">' +
+              '<button type="button" data-act="view-student" data-id="' + esc(u.id) + '">View</button>' +
+              '<button type="button" data-act="edit-student" data-id="' + esc(u.id) + '">Edit</button>' +
+              '</td></tr>';
+          }).join('');
+        });
+      }
+
+      function loadCompanies() {
+        return getJSON(API + '?resource=companies').then(function (d) {
+          var tbody = document.getElementById('tbody-companies');
+          var rows = d.companies || [];
+          if (!rows.length) {
+            tbody.innerHTML = '<tr><td colspan="7">No companies registered yet.</td></tr>';
+            return;
+          }
+          tbody.innerHTML = rows.map(function (u) {
+            return '<tr>' +
+              '<td>' + esc(u.id) + '</td>' +
+              '<td>' + esc(u.name) + '</td>' +
+              '<td>' + esc(u.email) + '</td>' +
+              '<td>' + esc(u.company_name) + '</td>' +
+              '<td>' + esc(u.company_type) + '</td>' +
+              '<td>' + esc(u.phone) + '</td>' +
+              '<td class="table-actions">' +
+              '<button type="button" data-act="view-company" data-id="' + esc(u.id) + '">View</button>' +
+              '<button type="button" data-act="edit-company" data-id="' + esc(u.id) + '">Edit</button>' +
+              '</td></tr>';
+          }).join('');
+        });
+      }
+
+      function loadPlaced() {
+        return getJSON(API + '?resource=placements').then(function (d) {
+          var tbody = document.getElementById('tbody-placed');
+          var rows = d.placements || [];
+          if (!rows.length) {
+            tbody.innerHTML = '<tr><td colspan="8">No placements recorded. Use “Record a new placement” below.</td></tr>';
+            return;
+          }
+          tbody.innerHTML = rows.map(function (p) {
+            var pkg = p.package_lpa != null && p.package_lpa !== '' ? esc(p.package_lpa) : '—';
+            return '<tr>' +
+              '<td>' + esc(p.id) + '</td>' +
+              '<td>' + esc(p.student_name) + '</td>' +
+              '<td>' + esc(p.student_department) + '</td>' +
+              '<td>' + esc(p.display_company) + '</td>' +
+              '<td>' + pkg + '</td>' +
+              '<td>' + esc(p.role_title) + '</td>' +
+              '<td>' + esc(p.placed_on) + '</td>' +
+              '<td class="table-actions">' +
+              '<button type="button" data-act="view-placement" data-id="' + esc(p.id) + '">Details</button>' +
+              '</td></tr>';
+          }).join('');
+        });
+      }
+
+      var backdrop = document.getElementById('modal-backdrop');
+      var modalTitle = document.getElementById('modal-title');
+      var modalBody = document.getElementById('modal-body');
+      var modalActions = document.getElementById('modal-actions');
+
+      function openModal(title, html, primaryBtn) {
+        modalTitle.textContent = title;
+        modalBody.innerHTML = html;
+        modalActions.innerHTML = '';
+        if (primaryBtn) {
+          primaryBtn.type = 'button';
+          modalActions.appendChild(primaryBtn);
+        }
+        var closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'secondary';
+        closeBtn.textContent = 'Close';
+        closeBtn.addEventListener('click', closeModal);
+        modalActions.appendChild(closeBtn);
+        backdrop.classList.add('open');
+        backdrop.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeModal() {
+        backdrop.classList.remove('open');
+        backdrop.setAttribute('aria-hidden', 'true');
+      }
+      backdrop.addEventListener('click', function (e) {
+        if (e.target === backdrop) closeModal();
+      });
+
+      function renderStudentProfile(u) {
+        return '<dl class="kv-list">' +
+          '<dt>ID</dt><dd>' + esc(u.id) + '</dd>' +
+          '<dt>Name</dt><dd>' + esc(u.name) + '</dd>' +
+          '<dt>Email</dt><dd>' + esc(u.email) + '</dd>' +
+          '<dt>Roll number</dt><dd>' + esc(u.roll_number) + '</dd>' +
+          '<dt>Department</dt><dd>' + esc(u.department) + '</dd>' +
+          '<dt>Phone</dt><dd>' + esc(u.phone) + '</dd>' +
+          '<dt>Registered</dt><dd>' + esc(u.created_at) + '</dd>' +
+          '</dl>';
+      }
+
+      function renderCompanyProfile(u) {
+        return '<dl class="kv-list">' +
+          '<dt>ID</dt><dd>' + esc(u.id) + '</dd>' +
+          '<dt>Contact name</dt><dd>' + esc(u.name) + '</dd>' +
+          '<dt>Email</dt><dd>' + esc(u.email) + '</dd>' +
+          '<dt>Phone</dt><dd>' + esc(u.phone) + '</dd>' +
+          '<dt>Company name</dt><dd>' + esc(u.company_name) + '</dd>' +
+          '<dt>Company type</dt><dd>' + esc(u.company_type) + '</dd>' +
+          '<dt>Registered</dt><dd>' + esc(u.created_at) + '</dd>' +
+          '</dl>';
+      }
+
+      function renderPlacementDetail(p) {
+        var comp = p.registered_company_name || p.company_name || '—';
+        return '<h4 style="margin:12px 0 6px;color:#333;">Student</h4>' +
+          '<dl class="kv-list">' +
+          '<dt>Name</dt><dd>' + esc(p.student_name) + '</dd>' +
+          '<dt>Email</dt><dd>' + esc(p.student_email) + '</dd>' +
+          '<dt>Roll</dt><dd>' + esc(p.student_roll) + '</dd>' +
+          '<dt>Department</dt><dd>' + esc(p.student_department) + '</dd>' +
+          '<dt>Phone</dt><dd>' + esc(p.student_phone) + '</dd>' +
+          '</dl>' +
+          '<h4 style="margin:12px 0 6px;color:#333;">Offer</h4>' +
+          '<dl class="kv-list">' +
+          '<dt>Company (display)</dt><dd>' + esc(comp) + '</dd>' +
+          '<dt>Linked company user</dt><dd>' + esc(p.company_contact_name || '—') + ' ' +
+            (p.company_email ? '(' + esc(p.company_email) + ')' : '') + '</dd>' +
+          '<dt>Package (LPA)</dt><dd>' + esc(p.package_lpa) + '</dd>' +
+          '<dt>Role</dt><dd>' + esc(p.role_title) + '</dd>' +
+          '<dt>Placed on</dt><dd>' + esc(p.placed_on) + '</dd>' +
+          '<dt>Notes</dt><dd>' + esc(p.notes) + '</dd>' +
+          '</dl>';
+      }
+
+      function studentEditForm(u) {
+        return '<form id="edit-student-form" class="admin-form-grid">' +
+          '<input type="hidden" name="id" value="' + attr(u.id) + '">' +
+          '<label>Name<input name="name" required value="' + attr(u.name) + '"></label>' +
+          '<label>Email<input name="email" type="email" required value="' + attr(u.email) + '"></label>' +
+          '<label>Roll number<input name="roll_number" value="' + attr(u.roll_number) + '"></label>' +
+          '<label>Department<input name="department" value="' + attr(u.department) + '"></label>' +
+          '<label>Phone<input name="phone" value="' + attr(u.phone) + '"></label>' +
+          '</form>';
+      }
+
+      function companyEditForm(u) {
+        return '<form id="edit-company-form" class="admin-form-grid">' +
+          '<input type="hidden" name="id" value="' + attr(u.id) + '">' +
+          '<label>Contact name<input name="name" required value="' + attr(u.name) + '"></label>' +
+          '<label>Email<input name="email" type="email" required value="' + attr(u.email) + '"></label>' +
+          '<label>Phone<input name="phone" value="' + attr(u.phone) + '"></label>' +
+          '<label>Company name<input name="company_name" value="' + attr(u.company_name) + '"></label>' +
+          '<label>Company type<input name="company_type" value="' + attr(u.company_type) + '"></label>' +
+          '</form>';
+      }
+
+      document.body.addEventListener('click', function (e) {
+        var t = e.target;
+        if (!t || !t.getAttribute) return;
+        var act = t.getAttribute('data-act');
+        var id = t.getAttribute('data-id');
+        if (!act || !id) return;
+
+        if (act === 'view-student') {
+          getJSON(API + '?resource=students&id=' + encodeURIComponent(id)).then(function (d) {
+            openModal('Student profile', renderStudentProfile(d.student));
+          }).catch(function (err) { showBanner(err.message, false); });
+        }
+        if (act === 'edit-student') {
+          getJSON(API + '?resource=students&id=' + encodeURIComponent(id)).then(function (d) {
+            var u = d.student;
+            var save = document.createElement('button');
+            save.textContent = 'Save changes';
+            openModal('Edit student', studentEditForm(u), save);
+            var form = document.getElementById('edit-student-form');
+            save.addEventListener('click', function () {
+              clearBanner();
+              var fd = new FormData(form);
+              var payload = {
+                action: 'update_student',
+                id: parseInt(fd.get('id'), 10),
+                name: fd.get('name'),
+                email: fd.get('email'),
+                roll_number: fd.get('roll_number'),
+                department: fd.get('department'),
+                phone: fd.get('phone')
+              };
+              fetch(API, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+              }).then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error); return j; }); })
+                .then(function () {
+                  showBanner('Student updated.', true);
+                  closeModal();
+                  loadStudents();
+                  loadStats();
+                })
+                .catch(function (err) { showBanner(err.message, false); });
+            });
+          }).catch(function (err) { showBanner(err.message, false); });
+        }
+        if (act === 'view-company') {
+          getJSON(API + '?resource=companies&id=' + encodeURIComponent(id)).then(function (d) {
+            openModal('Company profile', renderCompanyProfile(d.company));
+          }).catch(function (err) { showBanner(err.message, false); });
+        }
+        if (act === 'edit-company') {
+          getJSON(API + '?resource=companies&id=' + encodeURIComponent(id)).then(function (d) {
+            var u = d.company;
+            var save = document.createElement('button');
+            save.textContent = 'Save changes';
+            openModal('Edit company', companyEditForm(u), save);
+            var form = document.getElementById('edit-company-form');
+            save.addEventListener('click', function () {
+              clearBanner();
+              var fd = new FormData(form);
+              var payload = {
+                action: 'update_company',
+                id: parseInt(fd.get('id'), 10),
+                name: fd.get('name'),
+                email: fd.get('email'),
+                phone: fd.get('phone'),
+                company_name: fd.get('company_name'),
+                company_type: fd.get('company_type')
+              };
+              fetch(API, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+              }).then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error); return j; }); })
+                .then(function () {
+                  showBanner('Company updated.', true);
+                  closeModal();
+                  loadCompanies();
+                  loadStats();
+                })
+                .catch(function (err) { showBanner(err.message, false); });
+            });
+          }).catch(function (err) { showBanner(err.message, false); });
+        }
+        if (act === 'view-placement') {
+          getJSON(API + '?resource=placements&id=' + encodeURIComponent(id)).then(function (d) {
+            openModal('Placement details', renderPlacementDetail(d.placement));
+          }).catch(function (err) { showBanner(err.message, false); });
+        }
+      });
+
+      document.getElementById('form-add-placement').addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearBanner();
+        var fd = new FormData(e.target);
+        var cid = fd.get('company_id');
+        var payload = {
+          action: 'add_placement',
+          student_id: parseInt(fd.get('student_id'), 10),
+          company_id: cid ? parseInt(cid, 10) : null,
+          company_name: fd.get('company_name') || '',
+          package_lpa: fd.get('package_lpa') ? parseFloat(fd.get('package_lpa')) : null,
+          role_title: fd.get('role_title') || '',
+          placed_on: fd.get('placed_on') || '',
+          notes: fd.get('notes') || ''
+        };
+        fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error); return j; }); })
+          .then(function () {
+            showBanner('Placement saved.', true);
+            e.target.reset();
+            loadPlaced();
+            loadStats();
+          })
+          .catch(function (err) { showBanner(err.message, false); });
+      });
+
+      Promise.all([loadStats(), loadStudents(), loadCompanies(), loadPlaced()]).catch(function (err) {
+        showBanner(
+          'Could not load data. Open this page through your PHP server (e.g. http://localhost/.../placement_cordinator.html) and ensure MySQL is running. ' +
+          (err && err.message ? err.message : ''),
+          false
+        );
+      });
+    })();
+  </script>
+</body>
+</html>
